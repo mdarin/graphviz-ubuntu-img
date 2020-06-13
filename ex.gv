@@ -1,0 +1,41 @@
+digraph graphname{
+    # на примерах 
+    # https://tushavin.ru/graphviz/
+    #a [label="source"]
+    #b [label="destination"]
+    #dot -v -Tpng -o<OUTPUT> <INPUT>
+    #docker run -v $(pwd):/ws graphviz-ubuntu-img dot -v -Tpng -oex.png ex.gv
+
+    node [shape=box, style="rounded,filled"];
+
+    techdoc [label="Оформление потока сознания\nв техническую документацию" color="#ffc0cb"]
+    design [label="Дизайн и формирование\nструктуры продукта" color="#ffe4e1"]
+    prototype [label="Прототип и уточнение\nтехнического описания" color="#fff8dc"]
+    trial_operation [label="Опытный образец и период обкатки" color="#f5f5dc"]
+    product [label="Публикация текущей версии продукта" color="#f0f8ff"]
+    change_ahead_log [label="Период накопления изменений в журнале-накопителе\nдля формирования новой технической документации\nи версии продукта" color="#e6e6fa"]
+    hotfix [label="Исправление критических ошибок путём внесения\nизменений в опубликованную версию продукта\nс регистрацией этих изменений в журнале-накопителе" color="#f08080"]
+
+    #a -> b;
+
+    techdoc -> design [label="требования"];
+
+    design -> prototype [label="требования"];
+    design -> techdoc [label="замечания" style=dotted ];
+    design -> trial_operation [label="требования"];
+    
+    prototype -> trial_operation [label="требования"];
+    prototype -> design [label="замечания" style=dotted ];
+    prototype -> techdoc [label="замечания" style=dotted ];
+
+    trial_operation -> product [label="требования"];
+    trial_operation -> design [label="замечания" style=dotted ];
+    trial_operation -> techdoc [label="замечания" style=dotted ];
+
+    product -> change_ahead_log [label="исправления"];
+    product -> hotfix [label="отказы"];
+
+    change_ahead_log -> techdoc [label="перечень измененийи"];
+
+    hotfix -> product [label="временные решения"]; 
+}
